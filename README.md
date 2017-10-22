@@ -2,20 +2,39 @@
 
 [![GoDoc](https://godoc.org/github.com/umpc/concurrency-limit?status.svg)](https://godoc.org/github.com/umpc/concurrency-limit)
 
+Easily limit the number of running goroutines per given group of functions.
+
 ```sh
 go get -u github.com/umpc/concurrency-limit
 ```
 
-Easily limit the number of running goroutines per given group of functions:
+## Example
 
 ```go
-const limit = 2
-cl := New(limit)
+package main
 
-for i := 0; i < limit + 1; i++ {
-  go cl.Exec(func() {
-    fmt.Println("Hello world!")
-  })
+import (
+  "fmt"
+  "sync"
+
+  "github.com/umpc/concurrency-limit"
+)
+
+func main() {
+  const limit = 2
+  wg := new(sync.WaitGroup)
+
+  cl := climit.New(limit)
+  for i := 0; i < limit + 1; i++ {
+    if i < limit {
+      wg.Add(1)
+    }
+    go cl.Exec(func() {
+      defer wg.Done()
+      fmt.Println("Hello world!")
+    })
+  }
+  wg.Wait()
 }
 ```
 
