@@ -12,8 +12,8 @@ go get -u github.com/umpc/concurrency-limit
 
 ```go
 const limit = 2
-
 limitedConcurrency := climit.New(limit)
+
 go limitedConcurrency.Exec(func() {
   fmt.Println("Hello world!")
 })
