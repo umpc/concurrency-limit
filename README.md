@@ -11,31 +11,12 @@ go get -u github.com/umpc/concurrency-limit
 ## Example
 
 ```go
-package main
+const limit = 2
 
-import (
-  "fmt"
-  "sync"
-
-  "github.com/umpc/concurrency-limit"
-)
-
-func main() {
-  const limit = 2
-  wg := new(sync.WaitGroup)
-
-  cl := climit.New(limit)
-  for i := 0; i < limit + 1; i++ {
-    if i < limit {
-      wg.Add(1)
-    }
-    go cl.Exec(func() {
-      defer wg.Done()
-      fmt.Println("Hello world!")
-    })
-  }
-  wg.Wait()
-}
+limitedConcurrency := climit.New(limit)
+go limitedConcurrency.Exec(func() {
+  fmt.Println("Hello world!")
+})
 ```
 
 ## Benchmarks
