@@ -19,6 +19,8 @@ go limitedConcurrency.Exec(func() {
 })
 ```
 
+See the test file for a more in-depth example.
+
 ## Benchmarks
 
 ```sh
